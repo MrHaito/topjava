@@ -27,7 +27,7 @@ public class MealServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         storage = new MemoryStorage();
-        MealsUtil.meals.forEach(meal -> storage.createOrUpdate(meal));
+        MealsUtil.meals.forEach(meal -> storage.create(meal));
     }
 
     @Override
@@ -76,16 +76,12 @@ public class MealServlet extends HttpServlet {
         int calories = Integer.parseInt(req.getParameter("calories"));
 
         boolean isOldMeal = (storage.isContainsIndex(id));
-        Meal meal;
+        Meal meal = new Meal(dateTime, description, calories);
         if (isOldMeal) {
-            meal = storage.get(id);
-            meal.setDateTime(dateTime);
-            meal.setDescription(description);
-            meal.setCalories(calories);
+            storage.update(id, meal);
         } else {
-            meal = new Meal(dateTime, description, calories);
+            storage.create(meal);
         }
-        storage.createOrUpdate(meal);
         log.info("success update or create meal");
         resp.sendRedirect("meals");
     }

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Meal {
-    private final Integer mealId = Counter.counter.getAndIncrement();
+    private Integer mealId;
 
     private LocalDateTime dateTime;
 
@@ -21,6 +21,10 @@ public class Meal {
 
     public Integer getMealId() {
         return mealId;
+    }
+
+    public void setMealId(Integer mealId) {
+        this.mealId = mealId;
     }
 
     public LocalDateTime getDateTime() {
