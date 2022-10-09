@@ -11,7 +11,7 @@
 <hr>
 <h2>Meals</h2>
 <h3><a href="meals?action=add">Add Meal</a></h3>
-<table id="customers">
+<table>
     <tr>
         <th>Дата</th>
         <th>Описание</th>
@@ -25,8 +25,8 @@
             <td>${meal.date} ${meal.time}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td><a href="meals?uuid=${meal.uuid}&action=edit">Edit</a></td>
-            <td><a href="meals?uuid=${meal.uuid}&action=delete">Delete</a></td>
+            <td><a href="meals?id=${meal.mealId}&action=edit">Edit</a></td>
+            <td><a href="meals?id=${meal.mealId}&action=delete">Delete</a></td>
         </tr>
     </c:forEach>
 </table>

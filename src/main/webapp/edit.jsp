@@ -14,7 +14,7 @@
 <h3><a href="meals">Meals</a></h3>
 <section>
     <form method="post" action="meals" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="uuid" value="${meal.uuid}">
+        <input type="hidden" name="id" value="${meal.mealId}">
         <dl>
             <dt>DateTime:</dt>
             <dd><input type="datetime-local" name="datetime"

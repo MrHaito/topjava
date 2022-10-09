@@ -5,13 +5,13 @@ import ru.javawebinar.topjava.model.Meal;
 import java.util.List;
 
 public interface Storage {
-    void save(Meal meal);
+    Meal createOrUpdate(Meal meal);
 
-    void update(Meal meal);
+    void delete(String id);
 
-    void delete(String uuid);
-
-    Meal get(String uuid);
+    Meal get(String id);
 
     List<Meal> getAll();
+
+    boolean isContainsIndex(String id);
 }
