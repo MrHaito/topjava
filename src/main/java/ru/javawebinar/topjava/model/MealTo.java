@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class MealTo {
-    private final Integer mealId;
+    private final int id;
 
     private final LocalDateTime dateTime;
 
@@ -16,15 +16,15 @@ public class MealTo {
     private final boolean excess;
 
     public MealTo(Integer id, LocalDateTime dateTime, String description, int calories, boolean excess) {
-        this.mealId = id;
+        this.id = id;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
         this.excess = excess;
     }
 
-    public Integer getMealId() {
-        return mealId;
+    public Integer getId() {
+        return id;
     }
 
     public String getDescription() {
@@ -49,11 +49,6 @@ public class MealTo {
 
     @Override
     public String toString() {
-        return "MealTo{" +
-                "dateTime=" + dateTime +
-                ", description='" + description + '\'' +
-                ", calories=" + calories +
-                ", excess=" + excess +
-                '}';
+        return "MealTo{" + "dateTime=" + dateTime + ", description='" + description + '\'' + ", calories=" + calories + ", excess=" + excess + '}';
     }
 }

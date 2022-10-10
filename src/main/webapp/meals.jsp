@@ -21,12 +21,12 @@
     </tr>
     <c:forEach items="${meals}" var="meal">
         <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
-        <tr style="${meal.excess == true ? 'color: red' : 'color: green'}">
+        <tr style="color: ${meal.excess ? 'red' : 'green'}">
             <td>${meal.date} ${meal.time}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td><a href="meals?id=${meal.mealId}&action=edit">Edit</a></td>
-            <td><a href="meals?id=${meal.mealId}&action=delete">Delete</a></td>
+            <td><a href="meals?id=${meal.id}&action=edit">Edit</a></td>
+            <td><a href="meals?id=${meal.id}&action=delete">Delete</a></td>
         </tr>
     </c:forEach>
 </table>

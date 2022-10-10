@@ -1,24 +1,23 @@
 <jsp:useBean id="meal" scope="request" type="ru.javawebinar.topjava.model.Meal"/>
-<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>${meal.description}</title>
+    <title>${meal.id == null ? 'Add Meal' : 'Edit Meal'}</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<h2>${meal.description}</h2>
+<h2>${meal.id == null ? 'Add Meal' : 'Edit Meal'}</h2>
 <h3><a href="meals">Meals</a></h3>
 <section>
     <form method="post" action="meals" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="id" value="${meal.mealId}">
+        <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt>DateTime:</dt>
             <dd><input type="datetime-local" name="datetime"
-                       value="${meal.date}T${meal.dateTime.format(DateTimeFormatter.ofPattern("HH:mm"))}"></dd>
+                       value="${meal.dateTime}"></dd>
         </dl>
         <dl>
             <dt>Description: </dt>
