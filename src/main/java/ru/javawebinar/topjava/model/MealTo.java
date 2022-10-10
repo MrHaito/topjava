@@ -49,6 +49,11 @@ public class MealTo {
 
     @Override
     public String toString() {
-        return "MealTo{" + "dateTime=" + dateTime + ", description='" + description + '\'' + ", calories=" + calories + ", excess=" + excess + '}';
+        return "MealTo{" +
+                "dateTime=" + dateTime +
+                ", description='" + description + '\'' +
+                ", calories=" + calories +
+                ", excess=" + excess +
+                '}';
     }
 }

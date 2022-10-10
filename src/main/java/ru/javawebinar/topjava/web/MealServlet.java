@@ -20,9 +20,9 @@ import java.util.List;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
-    private Storage storage;
     private static final int CALORIES = 2000;
     private static final Logger log = getLogger(MealServlet.class);
+    private Storage storage;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -41,23 +41,26 @@ public class MealServlet extends HttpServlet {
             return;
         }
         switch (action) {
-            case "add":
+            case "add": {
                 log.info("add meal");
                 Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 0);
                 req.setAttribute("meal", meal);
                 break;
-            case "edit":
+            }
+            case "edit": {
                 log.info("edit meal");
                 String id = req.getParameter("id");
-                meal = storage.get(Integer.parseInt(id));
+                Meal meal = storage.get(Integer.parseInt(id));
                 req.setAttribute("meal", meal);
                 break;
-            case "delete":
+            }
+            case "delete": {
                 log.info("delete meal");
-                id = req.getParameter("id");
+                String id = req.getParameter("id");
                 storage.delete(Integer.parseInt(id));
                 resp.sendRedirect("meals");
                 return;
+            }
             default:
                 resp.sendRedirect("meals");
                 return;
@@ -74,7 +77,7 @@ public class MealServlet extends HttpServlet {
         String description = req.getParameter("description");
         int calories = Integer.parseInt(req.getParameter("calories"));
 
-        boolean isNewMeal = id == null || id.length() == 0;
+        boolean isNewMeal = id == null || id.isEmpty();
         Meal meal = new Meal(dateTime, description, calories);
         if (!isNewMeal) {
             meal.setId(Integer.parseInt(id));

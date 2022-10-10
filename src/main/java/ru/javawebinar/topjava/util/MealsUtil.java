@@ -29,17 +29,16 @@ public class MealsUtil {
     }
 
     public static List<MealTo> filteredByStreams(List<Meal> meals, int caloriesPerDay) {
-        Map<LocalDate, Integer> caloriesSumByDate = collectCaloriesSumByDate(meals);
-
-        return meals.stream()
-                .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
-                .collect(Collectors.toList());
+        return getMealTos(meals, caloriesPerDay, LocalTime.MIN, LocalTime.MAX, collectCaloriesSumByDate(meals));
     }
 
     public static List<MealTo> filteredByStreams(List<Meal> meals, int caloriesPerDay, LocalTime startTime,
                                                  LocalTime endTime) {
-        Map<LocalDate, Integer> caloriesSumByDate = collectCaloriesSumByDate(meals);
+        return getMealTos(meals, caloriesPerDay, startTime, endTime, collectCaloriesSumByDate(meals));
+    }
 
+    private static List<MealTo> getMealTos(List<Meal> meals, int caloriesPerDay, LocalTime startTime,
+                                           LocalTime endTime, Map<LocalDate, Integer> caloriesSumByDate) {
         return meals.stream()
                 .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime))
                 .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))

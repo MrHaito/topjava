@@ -14,16 +14,12 @@ public class MealsMemoryStorage implements Storage {
     private final Map<Integer, Meal> meals = new ConcurrentHashMap<>();
 
     public MealsMemoryStorage() {
-        MealsUtil.meals.forEach(meal -> {
-            Integer id = counter.getAndIncrement();
-            meal.setId(id);
-            meals.put(id, meal);
-        });
+        MealsUtil.meals.forEach(this::createOrUpdate);
     }
 
     @Override
     public Meal createOrUpdate(Meal meal) {
-        if (meal.getId() == null) {
+        if (meal.getId() == null || !meals.containsKey(meal.getId())) {
             meal.setId(counter.getAndIncrement());
         }
         meals.put(meal.getId(), meal);
@@ -31,22 +27,17 @@ public class MealsMemoryStorage implements Storage {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(int id) {
         meals.remove(id);
     }
 
     @Override
-    public Meal get(Integer id) {
+    public Meal get(int id) {
         return meals.get(id);
     }
 
     @Override
     public List<Meal> getAll() {
         return new ArrayList<>(meals.values());
-    }
-
-    @Override
-    public int size() {
-        return meals.size();
     }
 }
