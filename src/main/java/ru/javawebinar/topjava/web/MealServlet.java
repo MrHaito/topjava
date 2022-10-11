@@ -81,8 +81,10 @@ public class MealServlet extends HttpServlet {
         Meal meal = new Meal(dateTime, description, calories);
         if (!isNewMeal) {
             meal.setId(Integer.parseInt(id));
+            storage.update(meal);
+        } else {
+            storage.create(meal);
         }
-        storage.createOrUpdate(meal);
         resp.sendRedirect("meals");
     }
 }
