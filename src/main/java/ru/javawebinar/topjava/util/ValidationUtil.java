@@ -11,8 +11,17 @@ public class ValidationUtil {
         return object;
     }
 
+    public static <T> T checkNotFoundMealWidthId(T object, int id, int userId) {
+        checkNotFoundWithId(object != null, id, userId);
+        return object;
+    }
+
     public static void checkNotFoundWithId(boolean found, int id) {
         checkNotFound(found, "id=" + id);
+    }
+
+    public static void checkNotFoundWithId(boolean found, int id, int userid) {
+        checkNotFound(found, "id=" + id + ", userId=" + userid);
     }
 
     public static <T> T checkNotFound(T object, String msg) {
