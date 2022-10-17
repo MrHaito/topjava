@@ -1,3 +1,4 @@
+<%@ page import="ru.javawebinar.topjava.web.SecurityUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -21,7 +22,28 @@
     <h3><a href="index.html">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
-    <a href="meals?action=create">Add Meal</a>
+    <a href="meals?userId=<%=SecurityUtil.authUserId()%>&action=create">Add Meal</a><br/>
+    <form method="get" action="meals">
+        <dl>
+            <dt>От даты:</dt>
+            <dd><input type="date" name="startDate"></dd>
+        </dl>
+        <dl>
+            <dt>До даты:</dt>
+            <dd><input type="date" name="endDate"></dd>
+        </dl>
+
+        <dl>
+            <dt>От времени:</dt>
+            <dd><input type="time" name="startTime"></dd>
+        </dl>
+        <dl>
+            <dt>До времени:</dt>
+            <dd><input type="time" name="endTime"></dd>
+        </dl>
+        <button type="submit">Фильтровать</button>
+        <button onclick="window.history.back()" type="button">Cancel</button>
+    </form>
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
@@ -44,8 +66,8 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
-                <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
+                <td><a href="meals?userId=<%=SecurityUtil.authUserId()%>&action=update&id=${meal.id}">Update</a></td>
+                <td><a href="meals?userId=<%=SecurityUtil.authUserId()%>&action=delete&id=${meal.id}">Delete</a></td>
             </tr>
         </c:forEach>
     </table>

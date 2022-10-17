@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.util;
 
 
 import ru.javawebinar.topjava.model.AbstractBaseEntity;
+import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 public class ValidationUtil {
@@ -11,17 +12,8 @@ public class ValidationUtil {
         return object;
     }
 
-    public static <T> T checkNotFoundMealWidthId(T object, int id, int userId) {
-        checkNotFoundWithId(object != null, id, userId);
-        return object;
-    }
-
     public static void checkNotFoundWithId(boolean found, int id) {
         checkNotFound(found, "id=" + id);
-    }
-
-    public static void checkNotFoundWithId(boolean found, int id, int userid) {
-        checkNotFound(found, "id=" + id + ", userId=" + userid);
     }
 
     public static <T> T checkNotFound(T object, String msg) {
@@ -47,6 +39,17 @@ public class ValidationUtil {
             entity.setId(id);
         } else if (entity.getId() != id) {
             throw new IllegalArgumentException(entity + " must be with id=" + id);
+        }
+    }
+
+    public static class ValidationMealUtil {
+        public static Meal checkNotFoundMealWidthId(Meal meal, int id, int userId) {
+            checkNotFoundMealWidthId(meal != null, id, userId);
+            return meal;
+        }
+
+        public static void checkNotFoundMealWidthId(boolean found, int id, int userid) {
+            checkNotFound(found, "id=" + id + ", userId=" + userid);
         }
     }
 }

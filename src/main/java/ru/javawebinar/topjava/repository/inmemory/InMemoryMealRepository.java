@@ -5,12 +5,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.web.SecurityUtil;
+import ru.javawebinar.topjava.util.ValidationUtil;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryMealRepository implements MealRepository {
@@ -19,13 +28,16 @@ public class InMemoryMealRepository implements MealRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryMealRepository.class);
 
     {
-        MealsUtil.meals.forEach(meal -> save(meal, SecurityUtil.authUserId()));
+        MealsUtil.meals.forEach(meal -> save(meal, 1));
+        save(new Meal(LocalDateTime.of(2022, Month.OCTOBER, 16, 10, 0), "Тест для user2", 700), 2);
+        save(new Meal(LocalDateTime.of(2022, Month.OCTOBER, 16, 15, 0), "Тест2 для user2", 1500), 2);
     }
 
     @Override
     public Meal save(Meal meal, int userId) {
-        log.info("save {} with userId {}", meal, userId);
+        log.info("save {} with id {}, userId {}", meal, meal.getId(), userId);
         if (!meal.isNew() && meal.getUserId() != userId) {
+            ValidationUtil.checkNotFound(repository.get(meal.getId()), "Not found meal with " + meal.getId());
             return null;
         }
         if (meal.isNew()) {
@@ -35,12 +47,18 @@ public class InMemoryMealRepository implements MealRepository {
             return meal;
         }
         // handle case: update, but not present in storage
-        return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        return repository.computeIfPresent(meal.getId(), new BiFunction<Integer, Meal, Meal>() {
+            @Override
+            public Meal apply(Integer id, Meal oldMeal) {
+                return meal;
+            }
+        });
     }
 
     @Override
     public boolean delete(int id, int userId) {
         log.info("delete {} with userId {}", id, userId);
+        ValidationUtil.checkNotFound(repository.get(id), "mealId " + id);
         if (repository.get(id).getUserId() != userId) {
             return false;
         }
@@ -50,16 +68,30 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public Meal get(int id, int userId) {
         log.info("get {} with userId {}", id, userId);
-        return repository.get(id).getUserId() == userId ? repository.get(id) : null;
+        ValidationUtil.checkNotFound(repository.get(id), "mealId " + id);
+        return repository.get(id).getUserId() == userId ?
+                repository.get(id) :
+                null;
     }
 
     @Override
-    public Collection<Meal> getAll() {
+    public List<Meal> getAll(int userId) {
         log.info("getAll");
-        Comparator<Meal> MEAL_COMPARATOR = Comparator.comparing(Meal::getDateTime).reversed();
-        List<Meal> meals = new ArrayList<>(repository.values());
-        meals.sort(MEAL_COMPARATOR);
-        return meals;
+        return filterByPredicate(userId, meal -> false);
+    }
+
+    @Override
+    public List<Meal> getMealsByDates(int userId, LocalDate startDate, LocalDate endDate) {
+        return filterByPredicate(userId, meal -> DateTimeUtil.isBetweenDates(meal.getDate(), startDate, endDate));
+    }
+
+    public List<Meal> filterByPredicate(int userId, Predicate<Meal> filter) {
+        Comparator<Meal> mealComparator = Comparator.comparing(Meal::getDateTime).reversed();
+        return repository.values().stream()
+                .filter(meal -> meal.getUserId() == userId)
+                .filter(filter)
+                .sorted(mealComparator)
+                .collect(Collectors.toList());
     }
 }
 
