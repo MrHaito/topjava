@@ -24,10 +24,15 @@ public class MealRestController {
     @Autowired
     private MealService service;
 
-    public List<MealTo> getAll(LocalDate startDate, LocalDate endDate, LocalTime startTime,
-                                  LocalTime endTime) {
-        log.debug("getFilteredMealsTo");
-        return MealsUtil.getFilteredTos(service.getAll(SecurityUtil.authUserId(), startDate, endDate),
+    public List<MealTo> getAll() {
+        log.debug("getAll");
+        return MealsUtil.getTos(service.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay());
+    }
+
+    public List<MealTo> getByDates(LocalDate startDate, LocalDate endDate, LocalTime startTime,
+                                   LocalTime endTime) {
+        log.debug("getByDates");
+        return MealsUtil.getFilteredTos(service.getByDates(SecurityUtil.authUserId(), startDate, endDate),
                 MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime);
     }
 

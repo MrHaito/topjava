@@ -31,7 +31,11 @@ public class MealService {
         return ValidationUtil.Meal.checkNotFoundMealWidthId(repository.get(id, userId), id, userId);
     }
 
-    public List<Meal> getAll(int userId, LocalDate startDate, LocalDate endDate) {
+    public List<Meal> getAll(int userId) {
+        return repository.getAll(userId);
+    }
+
+    public List<Meal> getByDates(int userId, LocalDate startDate, LocalDate endDate) {
         return repository.getByDates(userId, startDate, endDate);
     }
 

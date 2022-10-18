@@ -85,8 +85,14 @@ public class MealServlet extends HttpServlet {
                 break;
             case "all":
             default:
-                log.info("getAll");
-                request.setAttribute("meals", repository.getAll(startDate, endDate, startTime, endTime));
+                boolean isFiltered = request.getParameter("filter") != null;
+                if (!isFiltered) {
+                    log.info("getAll");
+                    request.setAttribute("meals", repository.getAll());
+                } else {
+                    log.info("getByDates");
+                    request.setAttribute("meals", repository.getByDates(startDate, endDate, startTime, endTime));
+                }
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }

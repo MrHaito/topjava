@@ -25,7 +25,7 @@ public class SpringMain {
             SecurityUtil.setAuthUser(1);
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
             mealRestController.create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Тестовая еда", 500));
-            mealRestController.getAll(LocalDate.MIN, LocalDate.MAX, LocalTime.MIN, LocalTime.MAX).forEach(meal -> System.out.println(
+            mealRestController.getByDates(LocalDate.MIN, LocalDate.MAX, LocalTime.MIN, LocalTime.MAX).forEach(meal -> System.out.println(
                     "mealId: " + meal.getId()));
             mealRestController.get(1);
             mealRestController.update(mealRestController.get(7), 7);

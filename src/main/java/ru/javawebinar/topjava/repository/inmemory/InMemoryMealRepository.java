@@ -67,7 +67,7 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public List<Meal> getAll(int userId) {
         log.info("getAll");
-        return filterByPredicate(userId, meal -> false);
+        return filterByPredicate(userId, meal -> true);
     }
 
     @Override
