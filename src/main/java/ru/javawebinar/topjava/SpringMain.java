@@ -5,11 +5,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.web.SecurityUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
 
@@ -20,9 +22,11 @@ public class SpringMain {
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
+            SecurityUtil.setAuthUser(1);
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
-            mealRestController.create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
-            mealRestController.getAll().forEach(meal -> System.out.println("mealId: " + meal.getId() + ", userId: " + meal.getUserId()));
+            mealRestController.create(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Тестовая еда", 500));
+            mealRestController.getAll(LocalDate.MIN, LocalDate.MAX, LocalTime.MIN, LocalTime.MAX).forEach(meal -> System.out.println(
+                    "mealId: " + meal.getId()));
             mealRestController.get(1);
             mealRestController.update(mealRestController.get(7), 7);
             mealRestController.update(mealRestController.get(7), 7);

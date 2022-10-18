@@ -7,7 +7,6 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.util.ValidationUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -36,8 +34,7 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public Meal save(Meal meal, int userId) {
         log.info("save {} with id {}, userId {}", meal, meal.getId(), userId);
-        if (!meal.isNew() && meal.getUserId() != userId) {
-            ValidationUtil.checkNotFound(repository.get(meal.getId()), "Not found meal with " + meal.getId());
+        if (!meal.isNew() && repository.get(meal.getId()).getUserId() != userId) {
             return null;
         }
         if (meal.isNew()) {
@@ -47,18 +44,13 @@ public class InMemoryMealRepository implements MealRepository {
             return meal;
         }
         // handle case: update, but not present in storage
-        return repository.computeIfPresent(meal.getId(), new BiFunction<Integer, Meal, Meal>() {
-            @Override
-            public Meal apply(Integer id, Meal oldMeal) {
-                return meal;
-            }
-        });
+        meal.setUserId(userId);
+        return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
 
     @Override
     public boolean delete(int id, int userId) {
         log.info("delete {} with userId {}", id, userId);
-        ValidationUtil.checkNotFound(repository.get(id), "mealId " + id);
         if (repository.get(id).getUserId() != userId) {
             return false;
         }
@@ -68,10 +60,8 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public Meal get(int id, int userId) {
         log.info("get {} with userId {}", id, userId);
-        ValidationUtil.checkNotFound(repository.get(id), "mealId " + id);
-        return repository.get(id).getUserId() == userId ?
-                repository.get(id) :
-                null;
+        Meal meal = repository.get(id);
+        return meal.getUserId() == userId ? meal : null;
     }
 
     @Override
@@ -81,7 +71,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public List<Meal> getMealsByDates(int userId, LocalDate startDate, LocalDate endDate) {
+    public List<Meal> getByDates(int userId, LocalDate startDate, LocalDate endDate) {
         return filterByPredicate(userId, meal -> DateTimeUtil.isBetweenDates(meal.getDate(), startDate, endDate));
     }
 

@@ -17,7 +17,7 @@ public class DateTimeUtil {
     }
 
     public static boolean isBetweenDates(LocalDate ld, LocalDate startDate, LocalDate endDate) {
-        return (ld.isAfter(startDate) || ld.isEqual(startDate)) && (ld.isBefore(endDate) || ld.isEqual(endDate));
+        return ld.compareTo(startDate) >= 0 && (ld.isBefore(endDate) || ld.isEqual(endDate));
     }
 }
 

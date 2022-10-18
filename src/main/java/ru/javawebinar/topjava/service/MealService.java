@@ -28,18 +28,14 @@ public class MealService {
     }
 
     public Meal get(int id, int userId) {
-        return ValidationUtil.ValidationMealUtil.checkNotFoundMealWidthId(repository.get(id, userId), id, userId);
+        return ValidationUtil.Meal.checkNotFoundMealWidthId(repository.get(id, userId), id, userId);
     }
 
-    public List<Meal> getAll(int userId) {
-        return repository.getAll(userId);
-    }
-
-    public List<Meal> getMealsByDates(int userId, LocalDate startDate, LocalDate endDate) {
-        return repository.getMealsByDates(userId, startDate, endDate);
+    public List<Meal> getAll(int userId, LocalDate startDate, LocalDate endDate) {
+        return repository.getByDates(userId, startDate, endDate);
     }
 
     public void update(Meal meal, int userId) {
-        ValidationUtil.ValidationMealUtil.checkNotFoundMealWidthId(repository.save(meal, userId), meal.getId(), userId);
+        ValidationUtil.Meal.checkNotFoundMealWidthId(repository.save(meal, userId), meal.getId(), userId);
     }
 }

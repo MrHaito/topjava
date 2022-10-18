@@ -42,8 +42,8 @@ public class ValidationUtil {
         }
     }
 
-    public static class ValidationMealUtil {
-        public static Meal checkNotFoundMealWidthId(Meal meal, int id, int userId) {
+    public static class Meal {
+        public static ru.javawebinar.topjava.model.Meal checkNotFoundMealWidthId(ru.javawebinar.topjava.model.Meal meal, int id, int userId) {
             checkNotFoundMealWidthId(meal != null, id, userId);
             return meal;
         }

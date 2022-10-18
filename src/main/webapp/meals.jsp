@@ -22,7 +22,7 @@
     <h3><a href="index.html">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
-    <a href="meals?userId=<%=SecurityUtil.authUserId()%>&action=create">Add Meal</a><br/>
+    <a href="meals?action=create">Add Meal</a><br/>
     <form method="get" action="meals">
         <dl>
             <dt>От даты:</dt>
@@ -66,8 +66,8 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a href="meals?userId=<%=SecurityUtil.authUserId()%>&action=update&id=${meal.id}">Update</a></td>
-                <td><a href="meals?userId=<%=SecurityUtil.authUserId()%>&action=delete&id=${meal.id}">Delete</a></td>
+                <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
+                <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
             </tr>
         </c:forEach>
     </table>
