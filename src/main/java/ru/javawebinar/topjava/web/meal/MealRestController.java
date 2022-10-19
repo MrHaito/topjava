@@ -33,7 +33,7 @@ public class MealRestController {
                                    LocalTime endTime) {
         log.debug("getByDates");
         return MealsUtil.getFilteredTos(service.getByDates(SecurityUtil.authUserId(), startDate, endDate),
-                MealsUtil.DEFAULT_CALORIES_PER_DAY, startTime, endTime);
+                SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
     }
 
     public Meal get(int id) {
