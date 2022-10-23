@@ -38,12 +38,12 @@ public class UserServiceTest {
 
     @Test
     public void create() {
-        User created = service.create(getNew());
+        User created = service.create(getNewUser());
         Integer newId = created.getId();
-        User newUser = getNew();
+        User newUser = getNewUser();
         newUser.setId(newId);
-        assertMatch(created, newUser);
-        assertMatch(service.get(newId), newUser);
+        assertUserMatch(created, newUser);
+        assertUserMatch(service.get(newId), newUser);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class UserServiceTest {
     @Test
     public void get() {
         User user = service.get(USER_ID);
-        assertMatch(user, UserTestData.user);
+        assertUserMatch(user, UserTestData.user);
     }
 
     @Test
@@ -77,19 +77,19 @@ public class UserServiceTest {
     @Test
     public void getByEmail() {
         User user = service.getByEmail("admin@gmail.com");
-        assertMatch(user, admin);
+        assertUserMatch(user, admin);
     }
 
     @Test
     public void update() {
-        User updated = getUpdated();
+        User updated = getUserUpdated();
         service.update(updated);
-        assertMatch(service.get(USER_ID), getUpdated());
+        assertUserMatch(service.get(USER_ID), getUserUpdated());
     }
 
     @Test
     public void getAll() {
         List<User> all = service.getAll();
-        assertMatch(all, admin, guest, user);
+        assertUserMatch(all, admin, guest, user);
     }
 }
