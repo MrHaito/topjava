@@ -20,11 +20,11 @@ public class UserTestData {
     public static final User admin = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", Role.ADMIN);
     public static final User guest = new User(GUEST_ID, "Guest", "guest@gmail.com", "guest");
 
-    public static User getNewUser() {
+    public static User getNew() {
         return new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.USER));
     }
 
-    public static User getUserUpdated() {
+    public static User getUpdated() {
         User updated = new User(user);
         updated.setEmail("update@gmail.com");
         updated.setName("UpdatedName");
@@ -35,15 +35,15 @@ public class UserTestData {
         return updated;
     }
 
-    public static void assertUsersMatch(User actual, User expected) {
+    public static void assertMatch(User actual, User expected) {
         assertThat(actual).usingRecursiveComparison().ignoringFields("registered", "roles").isEqualTo(expected);
     }
 
-    public static void assertUsersMatch(Iterable<User> actual, User... expected) {
-        assertUsersMatch(actual, Arrays.asList(expected));
+    public static void assertMatch(Iterable<User> actual, User... expected) {
+        assertMatch(actual, Arrays.asList(expected));
     }
 
-    public static void assertUsersMatch(Iterable<User> actual, Iterable<User> expected) {
+    public static void assertMatch(Iterable<User> actual, Iterable<User> expected) {
         assertThat(actual).usingRecursiveFieldByFieldElementComparatorIgnoringFields("registered", "roles").isEqualTo(expected);
     }
 }
