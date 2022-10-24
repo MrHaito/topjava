@@ -19,8 +19,7 @@ import java.util.List;
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
+@ContextConfiguration({"classpath:spring/spring-jdbc-app.xml",
         "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringRunner.class)
@@ -42,8 +41,8 @@ public class UserServiceTest {
         Integer newId = created.getId();
         User newUser = getNewUser();
         newUser.setId(newId);
-        assertUserMatch(created, newUser);
-        assertUserMatch(service.get(newId), newUser);
+        assertUsersMatch(created, newUser);
+        assertUsersMatch(service.get(newId), newUser);
     }
 
     @Test
@@ -66,7 +65,7 @@ public class UserServiceTest {
     @Test
     public void get() {
         User user = service.get(USER_ID);
-        assertUserMatch(user, UserTestData.user);
+        assertUsersMatch(user, UserTestData.user);
     }
 
     @Test
@@ -77,19 +76,19 @@ public class UserServiceTest {
     @Test
     public void getByEmail() {
         User user = service.getByEmail("admin@gmail.com");
-        assertUserMatch(user, admin);
+        assertUsersMatch(user, admin);
     }
 
     @Test
     public void update() {
         User updated = getUserUpdated();
         service.update(updated);
-        assertUserMatch(service.get(USER_ID), getUserUpdated());
+        assertUsersMatch(service.get(USER_ID), getUserUpdated());
     }
 
     @Test
     public void getAll() {
         List<User> all = service.getAll();
-        assertUserMatch(all, admin, guest, user);
+        assertUsersMatch(all, admin, guest, user);
     }
 }
