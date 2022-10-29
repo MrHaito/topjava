@@ -1,4 +1,4 @@
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/bee16f3145654047a0505c62aeefd8a2)](https://www.codacy.com/gh/JavaWebinar/topjava/dashboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a71ce69fc1ad452cbba932d1fea7a704)](https://www.codacy.com/gh/MrHaito/topjava/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MrHaito/topjava&amp;utm_campaign=Badge_Grade)
 
 Java Enterprise Online Project 
 ===============================
