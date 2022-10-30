@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -36,17 +37,9 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 public class MealServiceTest {
     private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
     private static final StringBuilder results = new StringBuilder();
-    public static final Stopwatch STOPWATCH = new Stopwatch() {
-        @Override
-        protected void finished(long nanos, Description description) {
-            String result = String.format("%s %d ms", description.getDisplayName(),
-                    TimeUnit.NANOSECONDS.toMillis(nanos));
-            results.append(result).append('\n');
-            log.info("Время выполнения теста: " + TimeUnit.NANOSECONDS.toMillis(nanos) + " ms\n");
-        }
-    };
 
-    public static final ExternalResource SUMMARY = new ExternalResource() {
+    @ClassRule
+    public static ExternalResource summary = new ExternalResource() {
         @Override
         protected void before() throws Throwable {
             results.setLength(0);
@@ -54,15 +47,20 @@ public class MealServiceTest {
 
         @Override
         protected void after() {
-            log.info("\n\nНазвания и время выполнения тестов\n\n" + results + "\n\n");
+                log.info("\n\nTests name and time\n\n" + results + "\n\n");
         }
     };
 
-    @ClassRule
-    public static ExternalResource summary = MealServiceTest.SUMMARY;
-
     @Rule
-    public Stopwatch stopwatch = MealServiceTest.STOPWATCH;
+    public Stopwatch stopwatch = new Stopwatch() {
+        @Override
+        protected void finished(long nanos, Description description) {
+            String result = String.format("%-80s %d ms", description.getDisplayName(),
+                    TimeUnit.NANOSECONDS.toMillis(nanos));
+            results.append(result).append('\n');
+            log.info("Test time: " + TimeUnit.NANOSECONDS.toMillis(nanos) + " ms\n");
+        }
+    };
 
     @Autowired
     private MealService service;
@@ -118,14 +116,16 @@ public class MealServiceTest {
     @Test
     public void update() {
         Meal updated = getUpdated();
+        updated.setUser(UserTestData.user);
         service.update(updated, USER_ID);
         MEAL_MATCHER.assertMatch(service.get(MEAL1_ID, USER_ID), getUpdated());
     }
 
     @Test
     public void updateNotOwn() {
-        assertThrows(NotFoundException.class, () -> service.update(meal1, ADMIN_ID));
-        MEAL_MATCHER.assertMatch(service.get(MEAL1_ID, USER_ID), meal1);
+        Meal created = service.create(getNew(), USER_ID);
+        assertThrows(NotFoundException.class, () -> service.update(created, ADMIN_ID));
+        MEAL_MATCHER.assertMatch(service.get(created.getId(), USER_ID), created);
     }
 
     @Test
