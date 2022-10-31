@@ -15,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -116,16 +115,14 @@ public class MealServiceTest {
     @Test
     public void update() {
         Meal updated = getUpdated();
-        updated.setUser(UserTestData.user);
         service.update(updated, USER_ID);
         MEAL_MATCHER.assertMatch(service.get(MEAL1_ID, USER_ID), getUpdated());
     }
 
     @Test
     public void updateNotOwn() {
-        Meal created = service.create(getNew(), USER_ID);
-        assertThrows(NotFoundException.class, () -> service.update(created, ADMIN_ID));
-        MEAL_MATCHER.assertMatch(service.get(created.getId(), USER_ID), created);
+        assertThrows(NotFoundException.class, () -> service.update(meal1, ADMIN_ID));
+        MEAL_MATCHER.assertMatch(service.get(MEAL1_ID, USER_ID), meal1);
     }
 
     @Test
@@ -137,8 +134,7 @@ public class MealServiceTest {
     public void getBetweenInclusive() {
         MEAL_MATCHER.assertMatch(service.getBetweenInclusive(
                         LocalDate.of(2020, Month.JANUARY, 30),
-                        LocalDate.of(2020, Month.JANUARY, 30), USER_ID),
-                meal3, meal2, meal1);
+                        LocalDate.of(2020, Month.JANUARY, 30), USER_ID), meal3, meal2, meal1);
     }
 
     @Test
