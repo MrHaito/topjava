@@ -10,7 +10,6 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 @NamedQueries({
-        @NamedQuery(name = Meal.UPDATE, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:user_id"),
         @NamedQuery(name = Meal.GET_ALL, query = "SELECT m FROM Meal m WHERE m.user.id=:user_id ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.GET_BETWEEN_HALF_OPEN, query = "SELECT m FROM Meal m " +
@@ -21,7 +20,6 @@ import java.util.Objects;
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"})})
 public class Meal extends AbstractBaseEntity {
 
-    public static final String UPDATE = "Meal.update";
     public static final String DELETE = "Meal.delete";
     public static final String GET_ALL = "Meal.getAll";
     public static final String GET_BETWEEN_HALF_OPEN = "Meal.getBetweenHalfOpen";
