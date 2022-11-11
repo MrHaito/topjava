@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.service.datajpa;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Meal;
@@ -18,11 +19,10 @@ import static ru.javawebinar.topjava.UserTestData.*;
 @ActiveProfiles(Profiles.DATAJPA)
 public class DataJpaMealServiceTest extends MealServiceTest {
 
-    private UserService userService;
-
     @Test
     public void getWithUser() {
         Meal actual = service.getWithUser(ADMIN_MEAL_ID, ADMIN_ID);
-        MEAL_MATCHER_WITH_USER.assertMatch(actual, service.getWithUser(adminMeal1.id(), ADMIN_ID));
+        adminMeal1.setUser(admin);
+        MEAL_MATCHER_WITH_USER.assertMatch(actual, adminMeal1);
     }
 }
