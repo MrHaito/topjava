@@ -6,18 +6,20 @@ const ctx = {
         $.ajax({
             type: "GET",
             url: mealAjaxUrl + "filter",
-            data: $("#filter").serialize()
-        }).done(function () {
-            updateTable();
-            successNoty("Filtered")
+            data: $("#filter").serialize(),
+        }).done(function (data) {
+            updateTableByData(data);
         });
     }
 };
 
 function clearFilter() {
     $("#filter")[0].reset();
-    $.get(mealAjaxUrl, updateTable);
-    successNoty("Cleared")
+    $.get(mealAjaxUrl, updateTableByData);
+}
+
+function updateTableByData(data) {
+    ctx.datatableApi.clear().rows.add(data).draw();
 }
 
 $(function () {
@@ -47,7 +49,7 @@ $(function () {
             "order": [
                 [
                     0,
-                    "asc"
+                    "desc"
                 ]
             ]
         })

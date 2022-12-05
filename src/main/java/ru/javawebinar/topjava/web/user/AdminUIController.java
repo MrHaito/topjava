@@ -19,6 +19,14 @@ public class AdminUIController extends AbstractUserController {
     }
 
     @Override
+    @PostMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changeStatus(@PathVariable int id,
+                             @RequestParam boolean enabled) {
+        super.changeStatus(id, enabled);
+    }
+
+    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
