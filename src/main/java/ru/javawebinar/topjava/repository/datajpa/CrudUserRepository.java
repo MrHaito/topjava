@@ -25,8 +25,11 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.id=?1")
     User getWithMeals(int id);
 
+//    @Transactional
+//    @Query("UPDATE User u SET u.enabled=:enabled where u.id=:id")
+//    User changeStatus(@Param("id") int id,
+//                      @Param("enabled") boolean enabled);
+
     @Transactional
-    @Query("UPDATE User u SET u.enabled=:enabled where u.id=:id")
-    User changeStatus(@Param("id") int id,
-                      @Param("enabled") boolean enabled);
+    User changeStatus(int id, boolean enabled);
 }
