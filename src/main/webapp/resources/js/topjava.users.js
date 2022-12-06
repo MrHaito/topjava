@@ -15,8 +15,7 @@ function enable(checkbox, id) {
         type: "POST",
         data: "enabled=" + enabled
     }).done(function () {
-        checkbox.closest("tr").attr("user-enabled", !enabled);
-        // checkbox.closest("tr").class(enabled ? "user-enabled" : "user-disabled");
+        checkbox.closest("tr").attr("data-user-enabled", enabled);
         successNoty(enabled ? "Enabled" : "Disabled");
     })
 }
