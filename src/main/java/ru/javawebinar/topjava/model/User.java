@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.model;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.util.CollectionUtils;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
