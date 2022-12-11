@@ -1,4 +1,5 @@
 let form;
+const language = navigator.language.startsWith('ru') ? 'ru' : 'en';
 
 function makeEditable(datatableApi) {
     ctx.datatableApi = datatableApi;

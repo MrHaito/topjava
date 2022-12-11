@@ -2,7 +2,9 @@ package ru.javawebinar.topjava.util;
 
 
 import org.springframework.core.NestedExceptionUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.validation.BindingResult;
 import ru.javawebinar.topjava.HasId;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -71,5 +73,19 @@ public class ValidationUtil {
     public static Throwable getRootCause(@NonNull Throwable t) {
         Throwable rootCause = NestedExceptionUtils.getRootCause(t);
         return rootCause != null ? rootCause : t;
+    }
+
+    public static ResponseEntity<String> checkFormErrors(BindingResult result) {
+        if (result.hasErrors()) {
+            StringBuilder errorsResult = new StringBuilder("");
+
+            result.getFieldErrors().forEach(f -> errorsResult.append(String.format("[%s] %s<br>", f.getField(), f.getDefaultMessage())));
+
+//            String errorFieldsMsg = result.getFieldErrors().stream()
+//                    .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
+//                    .collect(Collectors.joining("<br>"));
+            return ResponseEntity.unprocessableEntity().body(errorsResult.toString());
+        }
+        return null;
     }
 }
