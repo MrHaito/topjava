@@ -10,6 +10,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.*;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ValidationUtil {
 
@@ -75,17 +76,10 @@ public class ValidationUtil {
         return rootCause != null ? rootCause : t;
     }
 
-    public static ResponseEntity<String> checkFormErrors(BindingResult result) {
-        if (result.hasErrors()) {
-            StringBuilder errorsResult = new StringBuilder("");
-
-            result.getFieldErrors().forEach(f -> errorsResult.append(String.format("[%s] %s<br>", f.getField(), f.getDefaultMessage())));
-
-//            String errorFieldsMsg = result.getFieldErrors().stream()
-//                    .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-//                    .collect(Collectors.joining("<br>"));
-            return ResponseEntity.unprocessableEntity().body(errorsResult.toString());
-        }
-        return null;
+    public static ResponseEntity<String> getErrors(BindingResult result) {
+        String errorFieldsMsg = result.getFieldErrors().stream()
+                .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
+                .collect(Collectors.joining("<br>"));
+        return ResponseEntity.unprocessableEntity().body(errorFieldsMsg);
     }
 }

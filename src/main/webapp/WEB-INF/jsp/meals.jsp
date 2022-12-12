@@ -70,7 +70,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="modalTitle"><spring:message code="meal.add"/></h4>
+                <h4 class="modal-title" id="modalTitle"></h4>
                 <button type="button" class="close" data-dismiss="modal" onclick="closeNoty()">&times;</button>
             </div>
             <div class="modal-body">
@@ -78,7 +78,8 @@
                     <input type="hidden" id="id" name="id">
 
                     <div class="form-group">
-                        <label for="datetimepicker" class="col-form-label"><spring:message code="meal.dateTime"/></label>
+                        <label for="datetimepicker" class="col-form-label"><spring:message
+                                code="meal.dateTime"/></label>
                         <input type="text" class="form-control" id="datetimepicker" name="dateTime"
                                placeholder="<spring:message code="meal.dateTime"/>">
                     </div>
@@ -111,10 +112,7 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
-<script type="text/javascript">
-    const i18n = [];
-    i18n["addTitle"] = '<spring:message code="meal.add"/>';
-    i18n["editTitle"] = '<spring:message code="meal.edit"/>';
-</script>
-<jsp:include page="fragments/footerScripts.jsp"/>
+<jsp:include page="fragments/footerScripts.jsp">
+    <jsp:param name="code" value="meal"/>
+</jsp:include>
 </html>

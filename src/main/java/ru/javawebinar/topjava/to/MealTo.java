@@ -2,21 +2,17 @@ package ru.javawebinar.topjava.to;
 
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.beans.ConstructorProperties;
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class MealTo extends BaseTo implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+public class MealTo extends BaseTo {
+    @DateTimeFormat(pattern = DateTimeUtil.DATE_TIME_PATTERN)
     @NotNull
     private LocalDateTime dateTime;
 
