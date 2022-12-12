@@ -29,9 +29,6 @@ $(function () {
             "columns": [
                 {
                     "data": "dateTime",
-                    "render": function (data, type, row) {
-                        return data.substring(0, 16).replace('T', ' ');
-                    }
                 },
                 {
                     "data": "description"
@@ -71,13 +68,15 @@ $.datetimepicker.setLocale(language);
 
 $.ajaxSetup({
     converters: {
-        "text json": function (result) {
-            const json = JSON.parse(result);
-            $(json).each(function () {
-                if (this.hasOwnProperty('dateTime')) {
-                    this.dateTime = this.dateTime.substring(0, 16).replace('T', ' ');
-                }
-            });
+        "text json": function (stringData) {
+            const json = JSON.parse(stringData);
+            if (typeof json === 'object') {
+                $(json).each(function () {
+                    if (this.hasOwnProperty('dateTime')) {
+                        this.dateTime = this.dateTime.substring(0, 16).replace('T', ' ');
+                    }
+                });
+            }
             return json;
         }
     }
